@@ -1,0 +1,8 @@
+Création d'une API rest avec Symdony :
+https://www.kaherecode.com/tutorial/developper-une-api-rest-avec-symfony-et-api-platform
+
+Symfony -> plusieurs clés primaires :
+https://stackoverflow.com/questions/13817724/multiple-composite-primary-keys-mapping-doctrine2
+
+À voir pour la création de controller custom :
+https://api-platform.com/docs/core/operations/#creating-custom-operations-and-controllers

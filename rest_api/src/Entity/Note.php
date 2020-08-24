@@ -28,13 +28,13 @@ class Note
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_account;
+    private $account;
 
     /**
      * @ORM\ManyToOne(targetEntity=Course::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_course;
+    private $course;
 
     public function getId(): ?int
     {
@@ -53,26 +53,26 @@ class Note
         return $this;
     }
 
-    public function getIdAccount(): ?Account
+    public function getAccount(): ?Account
     {
-        return $this->id_account;
+        return $this->account;
     }
 
-    public function setIdAccount(?Account $id_account): self
+    public function setAccount(?Account $account): self
     {
-        $this->id_account = $id_account;
+        $this->account = $account;
 
         return $this;
     }
 
-    public function getIdCourse(): ?Course
+    public function getCourse(): ?Course
     {
-        return $this->id_course;
+        return $this->course;
     }
 
-    public function setIdCourse(?Course $id_course): self
+    public function setCourse(?Course $course): self
     {
-        $this->id_course = $id_course;
+        $this->course = $course;
 
         return $this;
     }

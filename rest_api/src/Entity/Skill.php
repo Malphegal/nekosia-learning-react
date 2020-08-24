@@ -27,19 +27,13 @@ class Skill
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tag::class, mappedBy="id_skill", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Tag::class, mappedBy="skill", orphanRemoval=true)
      */
     private $tags;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Studied::class, mappedBy="id_skill", orphanRemoval=true)
-     */
-    private $studieds;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
-        $this->studieds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,37 +78,6 @@ class Skill
             // set the owning side to null (unless already changed)
             if ($tag->getIdSkill() === $this) {
                 $tag->setIdSkill(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Studied[]
-     */
-    public function getStudieds(): Collection
-    {
-        return $this->studieds;
-    }
-
-    public function addStudied(Studied $studied): self
-    {
-        if (!$this->studieds->contains($studied)) {
-            $this->studieds[] = $studied;
-            $studied->setIdSkill($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStudied(Studied $studied): self
-    {
-        if ($this->studieds->contains($studied)) {
-            $this->studieds->removeElement($studied);
-            // set the owning side to null (unless already changed)
-            if ($studied->getIdSkill() === $this) {
-                $studied->setIdSkill(null);
             }
         }
 

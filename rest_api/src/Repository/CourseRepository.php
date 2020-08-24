@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Enum\CourseFieldOrder;
 
 /**
  * @method Course|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,18 @@ class CourseRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Course::class);
+    }
+
+    public function getPage(int $page, int $pageSize)
+    {
+        //CourseFieldOrder::ASC
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'ASC')
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

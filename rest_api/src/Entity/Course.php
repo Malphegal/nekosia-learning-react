@@ -45,36 +45,36 @@ class Course
      * @ORM\ManyToOne(targetEntity=Theme::class, inversedBy="courses")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_theme;
+    private $theme;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="courses")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_account;
+    private $account;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="id_course")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="course")
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="id_course")
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="course")
      */
     private $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Subscribe::class, mappedBy="id_course", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Subscribe::class, mappedBy="course", orphanRemoval=true)
      */
     private $subscribes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tag::class, mappedBy="id_course", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Tag::class, mappedBy="course", orphanRemoval=true)
      */
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity=Progression::class, mappedBy="id_course", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Progression::class, mappedBy="course", orphanRemoval=true)
      */
     private $progressions;
 
@@ -140,26 +140,26 @@ class Course
         return $this;
     }
 
-    public function getIdTheme(): ?Theme
+    public function getTheme(): ?Theme
     {
-        return $this->id_theme;
+        return $this->theme;
     }
 
-    public function setIdTheme(?Theme $id_theme): self
+    public function setTheme(?Theme $theme): self
     {
-        $this->id_theme = $id_theme;
+        $this->theme = $theme;
 
         return $this;
     }
 
-    public function getIdAccount(): ?Account
+    public function getAccount(): ?Account
     {
-        return $this->id_account;
+        return $this->account;
     }
 
-    public function setIdAccount(?Account $id_account): self
+    public function setAccount(?Account $account): self
     {
-        $this->id_account = $id_account;
+        $this->account = $account;
 
         return $this;
     }

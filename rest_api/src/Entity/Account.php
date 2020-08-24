@@ -57,14 +57,14 @@ class Account
     private $subscribes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Studied::class, mappedBy="id_account", orphanRemoval=true)
-     */
-    private $studieds;
-
-    /**
      * @ORM\OneToMany(targetEntity=Progression::class, mappedBy="id_account", orphanRemoval=true)
      */
     private $progressions;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $created_date;
 
     public function __construct()
     {
@@ -72,7 +72,6 @@ class Account
         $this->comments = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->subscribes = new ArrayCollection();
-        $this->studieds = new ArrayCollection();
         $this->progressions = new ArrayCollection();
     }
 
@@ -242,37 +241,6 @@ class Account
     }
 
     /**
-     * @return Collection|Studied[]
-     */
-    public function getStudieds(): Collection
-    {
-        return $this->studieds;
-    }
-
-    public function addStudied(Studied $studied): self
-    {
-        if (!$this->studieds->contains($studied)) {
-            $this->studieds[] = $studied;
-            $studied->setIdAccount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStudied(Studied $studied): self
-    {
-        if ($this->studieds->contains($studied)) {
-            $this->studieds->removeElement($studied);
-            // set the owning side to null (unless already changed)
-            if ($studied->getIdAccount() === $this) {
-                $studied->setIdAccount(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Progression[]
      */
     public function getProgressions(): Collection
@@ -299,6 +267,18 @@ class Account
                 $progression->setIdAccount(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedDate(): ?\DateTimeInterface
+    {
+        return $this->created_date;
+    }
+
+    public function setCreatedDate(\DateTimeInterface $created_date): self
+    {
+        $this->created_date = $created_date;
 
         return $this;
     }

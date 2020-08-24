@@ -27,7 +27,7 @@ class Theme
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Course::class, mappedBy="id_theme")
+     * @ORM\OneToMany(targetEntity=Course::class, mappedBy="theme")
      */
     private $courses;
 

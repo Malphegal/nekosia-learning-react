@@ -14,59 +14,58 @@ class Progression
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="progressions")
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_account;
+    private $account;
 
     /**
-     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Course::class, inversedBy="progressions")
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_course;
+    private $course;
 
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="integer")
      */
     private $page_number;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $progression_date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdAccount(): ?Account
+    public function getAccount(): ?Account
     {
-        return $this->id_account;
+        return $this->account;
     }
 
-    public function setIdAccount(?Account $id_account): self
+    public function setAccount(?Account $account): self
     {
-        $this->id_account = $id_account;
+        $this->account = $account;
 
         return $this;
     }
 
-    public function getIdCourse(): ?Course
+    public function getCourse(): ?Course
     {
-        return $this->id_course;
+        return $this->course;
     }
 
-    public function setIdCourse(?Course $id_course): self
+    public function setCourse(?Course $course): self
     {
-        $this->id_course = $id_course;
+        $this->course = $course;
 
         return $this;
     }
@@ -79,6 +78,18 @@ class Progression
     public function setPageNumber(int $page_number): self
     {
         $this->page_number = $page_number;
+
+        return $this;
+    }
+
+    public function getProgressionDate(): ?\DateTimeInterface
+    {
+        return $this->progression_date;
+    }
+
+    public function setProgressionDate(\DateTimeInterface $progression_date): self
+    {
+        $this->progression_date = $progression_date;
 
         return $this;
     }

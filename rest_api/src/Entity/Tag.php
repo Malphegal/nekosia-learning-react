@@ -23,39 +23,39 @@ class Tag
      * @ORM\ManyToOne(targetEntity=Course::class, inversedBy="tags")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_course;
+    private $course;
 
     /**
      * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="tags")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_skill;
+    private $skill;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdCourse(): ?Course
+    public function getCourse(): ?Course
     {
-        return $this->id_course;
+        return $this->course;
     }
 
-    public function setIdCourse(?Course $id_course): self
+    public function setCourse(?Course $course): self
     {
-        $this->id_course = $id_course;
+        $this->course = $course;
 
         return $this;
     }
 
-    public function getIdSkill(): ?Skill
+    public function getSkill(): ?Skill
     {
-        return $this->id_skill;
+        return $this->skill;
     }
 
-    public function setIdSkill(?Skill $id_skill): self
+    public function setSkill(?Skill $skill): self
     {
-        $this->id_skill = $id_skill;
+        $this->skill = $skill;
 
         return $this;
     }

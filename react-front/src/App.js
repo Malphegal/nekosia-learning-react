@@ -14,7 +14,7 @@ function App() {
             </ul>
             */ }
             <header>
-                <p>a</p>
+                <h1><a href="/1/4">Nekosia</a></h1>
             </header>
 
             <Route path="/:currentPage/:pageSize" component={ Courses }/>

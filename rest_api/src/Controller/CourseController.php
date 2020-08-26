@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Enum\CourseFieldOrder;
 
 // TODO: Ajouter les cas d'erreurs dans les méthodes :
 //          - Si y'a pas de données
@@ -38,23 +39,21 @@ class CourseController extends AbstractController
      */
     public function getCourses(CourseRepository $cr, $from, $to)
     {
-        $a = array('a'=> 1);
-        return $this->json($a, 200, [], [
-            //'groups' => 'post:read'
-        ]);
-        $courses = $cr->getPage($from, $to);
-        $courses[0] = $this->convertCourseIdsToValues($courses[0]);
-        return $this->json($courses, 200, [], [
+        $courses = $cr->getPage($from, $to, CourseFieldOrder::ASC | CourseFieldOrder::RELEASE_DATE);
+        for ($i = 0; $i < count($courses); $i++)
+            $courses[$i] = $this->convertCourseIdsToValues($courses[$i]);
+        return $this->json(["courses" => $courses, "totalAmount" => $cr->countCourses()], 200, [], [
             //'groups' => 'post:read'
         ]);
     }
 
     private function convertCourseIdsToValues($course)
     {
-        $res = array("name" => $course->getName());
-        $course->setAccount($course->getAccount()->getNickname());
-        dd($acc);
-        return $course;
+        $res = ["name" => $course->getName(), "difficulty" => $course->getDifficulty(), "createdDate" => $course->getCreatedDate(),
+            "author" => $course->getAccount()->getNickname(), "theme" => $course->getTheme()->getName(), "themeId" => $course->getTheme()->getId(),
+            "description" => $course->getDescription()];
+            
+        return $res;
     }
     
     /**

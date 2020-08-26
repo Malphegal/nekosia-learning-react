@@ -1,0 +1,25 @@
+.cardContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.courseCard{
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+.courseCard h3{
+    margin: 0;
+}
+
+.paddingCourseCard{
+    padding: 10px;
+    width: 50%;
+}
+
+.roundedTag{
+    padding: 0.2em 0.5em;
+    width: fit-content;
+    border-radius: 8px;
+}

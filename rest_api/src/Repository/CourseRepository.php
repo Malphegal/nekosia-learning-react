@@ -20,16 +20,33 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
-    public function getPage(int $page, int $pageSize)
+    public function getPage(int $page, int $pageSize, int $order)
     {
-        //CourseFieldOrder::ASC
+        $asc_or_desc = $order & CourseFieldOrder::DESC ? 'DESC' : 'ASC';
+        $getFieldOrder = $this->getFieldOrder($order);
+
         return $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'ASC')
+            ->orderBy($getFieldOrder, $asc_or_desc)
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    private function getFieldOrder($order)
+    {
+        $res = null;
+        if (($order & CourseFieldOrder::RELEASE_DATE) != 0)
+            $res = $res == null ? "c.created_date" : $res + ", c.created_date";
+        return $res ?? 'c.id';
+    }
+
+    public function countCourses()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     // /**

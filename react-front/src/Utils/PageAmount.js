@@ -8,12 +8,30 @@ export default class PageAmount extends React.Component{
     constructor(props)
     {
         super(props);
-        this.aIndex = 0;
+        this.tagIndex = 0;
+        
+        this.currentPageURL = undefined;
+        this.current = undefined;
+        this.pageSize = undefined;
+        this.totalAmount = undefined;
 
+        this.notInRange = false;
         this.maxIndexesRange = 3;
     }
     
     // ---- METHODS ----
+
+    /**
+     * Creates a <a> tag linked to a page.
+     *
+     * @param {number} page The page link.
+     * @param {string|undefined} [isCurrent=undefined] The ID tag prop.
+     * @returns Returns a new <a> tag.
+     */
+    createLink(page, isCurrent = undefined)
+    {
+        return <a className="pageLink" id={ isCurrent ? isCurrent : "" } href={ `${this.currentPageURL}${page}` } key={ this.tagIndex++ }>{ page }</a>
+    }
 
     /**
      *  A function to get previous indexes of the current page index.
@@ -23,11 +41,11 @@ export default class PageAmount extends React.Component{
      * @param {number} pageSize The page size.
      * @returns Returns <a> elements.
      */
-    previousPages(currentPageURL, current, pageSize)
+    previousPages()
     {
         let res = [];
-        for (let i = Math.max(1, current - this.maxIndexesRange); i < current; i++)
-            res.push(<a href={ `${currentPageURL}${i}/${pageSize}` } key={ this.aIndex++ }>{ i }</a>);
+        for (let i = Math.max(1, this.current - this.maxIndexesRange); i < this.current; i++)
+            res.push(this.createLink(i));
         return res;
     }
 
@@ -40,30 +58,34 @@ export default class PageAmount extends React.Component{
      * @param {number} totalAmount The total amount of items.
      * @returns Returns <a> elements.
      */
-    nextPages(currentPageURL, current, pageSize, totalAmount)
+    nextPages()
     {
         let res = [];
-        for (let i = parseInt(current, 10) + 1; i <= Math.min(current + this.maxIndexesRange, Math.ceil(totalAmount / pageSize)); i++)
-            res.push(<a href={ `${currentPageURL}${i}/${pageSize}` } key={ this.aIndex++ }>{ i }</a>);
+        for (let i = parseInt(this.current, 10) + 1; i <= Math.min(this.current + this.maxIndexesRange, Math.ceil(this.totalAmount / this.pageSize)); i++)
+            res.push(this.createLink(i));
         return res;
     }
 
     render()
     {
         this.aIndex = 0;
-        const currentPageURL = this.props.currentPageURL;
-        const current = this.props.current;
-        const pageSize = this.props.pageSize;
-        const totalAmount = this.props.totalAmount;
+        const currentPageURL = this.currentPageURL = this.props.currentPageURL;
+        let current = this.current = parseInt(this.props.current);
+        const pageSize = this.pageSize = parseInt(this.props.pageSize);
+        const totalAmount = this.totalAmount = parseInt(this.props.totalAmount);
+
+        if (current > Math.ceil(this.totalAmount / this.pageSize))
+        {
+            current = this.current = Math.ceil(this.totalAmount / this.pageSize);
+            this.notInRange = true;
+        }
 
         const pageWord = totalAmount > pageSize ? "Pages" : "Page";
         return <span>
             { pageWord } :
             { this.previousPages(currentPageURL, current, pageSize) }
-            <a id="currentPageIndex" href={ `${currentPageURL}${current}/${pageSize}` } key={ this.aIndex++ }>{ current }</a>
+            { this.createLink(current, this.notInRange ? "" : "currentPageIndex") }
             { this.nextPages(currentPageURL, current, pageSize, totalAmount) }
         </span>
     }
 }
-
-//currentPageIndex

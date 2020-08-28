@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import Courses from './Course/Courses.js'
-import { BrowserRouter as Router, Route/*, Link */ } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route/*, Link */ } from 'react-router-dom';
 
 function App() {
+    
     return <Router>
         <div>
             { /*
@@ -14,13 +15,16 @@ function App() {
             </ul>
             */ }
             <header>
-                <h1><a href="/1/4">Nekosia</a></h1>
+                <h1><a href="/courses">Nekosia</a></h1>
             </header>
-
-            <Route path="/:currentPage/:pageSize" component={ Courses }/>
-            { /* <Route path="/about" component={About}/> */ }
-            { /* <Route path="/topics" component={Topics}/> */ }
+            <Switch>
+                <Route path="/courses/:page?" component={ Courses } />
+                { /* <Route path="/about" component={About}/> */ }
+                { /* <Route path="/topics" component={Topics}/> */ }
+                <Route path="/" component={ Courses } />
+            </Switch>
         </div>
+        
     </Router>
 }
 

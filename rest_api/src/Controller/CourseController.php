@@ -49,7 +49,7 @@ class CourseController extends AbstractController
 
     private function convertCourseIdsToValues($course)
     {
-        $res = ["name" => $course->getName(), "difficulty" => $course->getDifficulty(), "createdDate" => $course->getCreatedDate(),
+        $res = ["courseId" => $course->getId(), "name" => $course->getName(), "difficulty" => $course->getDifficulty(), "createdDate" => $course->getCreatedDate(),
             "author" => $course->getAccount()->getNickname(), "theme" => $course->getTheme()->getName(), "themeId" => $course->getTheme()->getId(),
             "description" => $course->getDescription()];
             

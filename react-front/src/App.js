@@ -18,7 +18,7 @@ function App() {
                 <h1><a href="/courses">Nekosia</a></h1>
             </header>
             <Switch>
-                <Route path="/courses/:page?" component={ Courses } />
+                <Route path="/courses" component={ Courses } />
                 { /* <Route path="/about" component={About}/> */ }
                 { /* <Route path="/topics" component={Topics}/> */ }
                 <Route path="/" component={ Courses } />

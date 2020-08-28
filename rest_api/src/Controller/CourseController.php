@@ -35,14 +35,23 @@ class CourseController extends AbstractController
     }
 
     /**
-     * @Route("/api/courses/{from}/{to}", name="get_courses", methods={"GET"})
+     * @Route("/api/courses/{page}/{pagesize}", name="get_courses", methods={"GET"})
      */
-    public function getCourses(CourseRepository $cr, $from, $to)
+    public function getCourses(Request $request, CourseRepository $cr, $page, $pagesize)
     {
-        $courses = $cr->getPage($from, $to, CourseFieldOrder::ASC | CourseFieldOrder::RELEASE_DATE);
+        // ORDER BY
+        $options = ["order" => CourseFieldOrder::DESC | CourseFieldOrder::RELEASE_DATE];
+
+        // NAME
+        if ($request->query->get('name') !== null)
+            $options["name"] = $request->query->get('name');
+
+        // Database request
+        $courses = $cr->getPage($page, $pagesize, $options);
         for ($i = 0; $i < count($courses); $i++)
             $courses[$i] = $this->convertCourseIdsToValues($courses[$i]);
-        return $this->json(["courses" => $courses, "totalAmount" => $cr->countCourses()], 200, [], [
+            
+        return $this->json(["courses" => $courses, "totalAmount" => $cr->countCourses($options)], 200, [], [
             //'groups' => 'post:read'
         ]);
     }

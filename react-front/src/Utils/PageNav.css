@@ -1,0 +1,8 @@
+span.pageNavElement{
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+
+span#currentPageIndex{
+    font-weight: bold;
+}

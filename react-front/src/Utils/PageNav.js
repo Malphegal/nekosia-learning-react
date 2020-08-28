@@ -1,7 +1,7 @@
 import React from 'react';
-import './PageAmount.css';
+import './PageNav.css';
 
-export default class PageAmount extends React.Component{
+export default class PageNav extends React.Component{
     
     // ---- CONSTRUCTORS ----
 
@@ -10,7 +10,6 @@ export default class PageAmount extends React.Component{
         super(props);
         this.tagIndex = 0;
         
-        this.currentPageURL = undefined;
         this.current = undefined;
         this.pageSize = undefined;
         this.totalAmount = undefined;
@@ -26,20 +25,17 @@ export default class PageAmount extends React.Component{
      *
      * @param {number} page The page link.
      * @param {string|undefined} [isCurrent=undefined] The ID tag prop.
-     * @returns Returns a new <a> tag.
+     * @returns Returns a new <span> tag.
      */
     createLink(page, isCurrent = undefined)
     {
-        return <a className="pageLink" id={ isCurrent ? isCurrent : "" } href={ `${this.currentPageURL}${page}` } key={ this.tagIndex++ }>{ page }</a>
+        return <span className="pageNavElement" id={ isCurrent ? isCurrent : "" } onClick={ (e) => this.props.onClick(e.target.innerHTML) } key={ this.tagIndex++ }>{ page }</span>
     }
 
     /**
      *  A function to get previous indexes of the current page index.
      *
-     * @param {number} currentPageURL The current base URL.
-     * @param {number} current The current page.
-     * @param {number} pageSize The page size.
-     * @returns Returns <a> elements.
+     * @returns Returns <span> elements.
      */
     previousPages()
     {
@@ -52,11 +48,7 @@ export default class PageAmount extends React.Component{
     /**
      *  A function to get next indexes of the current page index
      * 
-     * @param {number} currentPageURL The current base URL.
-     * @param {number} current The current page.
-     * @param {number} pageSize The page size.
-     * @param {number} totalAmount The total amount of items.
-     * @returns Returns <a> elements.
+     * @returns Returns <span> elements.
      */
     nextPages()
     {
@@ -69,7 +61,6 @@ export default class PageAmount extends React.Component{
     render()
     {
         this.aIndex = 0;
-        const currentPageURL = this.currentPageURL = this.props.currentPageURL;
         let current = this.current = parseInt(this.props.current);
         const pageSize = this.pageSize = parseInt(this.props.pageSize);
         const totalAmount = this.totalAmount = parseInt(this.props.totalAmount);
@@ -83,9 +74,9 @@ export default class PageAmount extends React.Component{
         const pageWord = totalAmount > pageSize ? "Pages" : "Page";
         return <span>
             { pageWord } :
-            { this.previousPages(currentPageURL, current, pageSize) }
+            { this.previousPages(current, pageSize) }
             { this.createLink(current, this.notInRange ? "" : "currentPageIndex") }
-            { this.nextPages(currentPageURL, current, pageSize, totalAmount) }
+            { this.nextPages(current, pageSize, totalAmount) }
         </span>
     }
 }

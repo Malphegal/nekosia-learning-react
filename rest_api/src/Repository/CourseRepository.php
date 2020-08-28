@@ -19,18 +19,65 @@ class CourseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Course::class);
     }
-
-    public function getPage(int $page, int $pageSize, int $order)
+    
+    public function getPage(int $page, int $pageSize, $options = [])
     {
-        $asc_or_desc = $order & CourseFieldOrder::DESC ? 'DESC' : 'ASC';
-        $getFieldOrder = $this->getFieldOrder($order);
+        $res = $this->createQueryBuilder('c');
+        $res = $this->findWhere($res, $options);
 
-        return $this->createQueryBuilder('c')
-            ->orderBy($getFieldOrder, $asc_or_desc)
+        // ORDER BY
+        $res = $this->orderBy($res, $options);
+        /*
+        $asc_or_desc = 'DESC';
+        $getFieldOrder = "c.created_date";
+        if (array_key_exists("order", $options))
+        {
+            $order = $options["order"];
+            $asc_or_desc = $order & CourseFieldOrder::DESC ? 'DESC' : 'ASC';
+            $getFieldOrder = $this->getFieldOrder($order);
+        }
+        */
+
+        return $res
+            //->orderBy($getFieldOrder, $asc_or_desc)
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize)
             ->getQuery()
             ->getResult();
+    }
+
+    public function countCourses($options = [])
+    {
+        $res = $this->createQueryBuilder('c');
+        $res = $this->findWhere($res, $options);
+        return $res->select('COUNT(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findWhere($qb, $options)
+    {
+        // NAME LIKE
+        if (array_key_exists("name", $options))
+        {
+            $qb->where('c.name LIKE :name')
+                ->setParameter('name', '%' . $options["name"] . '%');
+        }
+        return $qb;
+    }
+
+    public function orderBy($qb, $options)
+    {
+        // ORDER BY
+        $asc_or_desc = 'DESC';
+        $getFieldOrder = "c.created_date, c.name";
+        if (array_key_exists("order", $options))
+        {
+            $order = $options["order"];
+            $asc_or_desc = $order & CourseFieldOrder::DESC ? 'DESC' : 'ASC';
+            $getFieldOrder = $this->getFieldOrder($order);
+        }
+        return $qb->orderBy($getFieldOrder, $asc_or_desc);
     }
 
     private function getFieldOrder($order)
@@ -38,15 +85,15 @@ class CourseRepository extends ServiceEntityRepository
         $res = null;
         if (($order & CourseFieldOrder::RELEASE_DATE) != 0)
             $res = $res == null ? "c.created_date" : $res + ", c.created_date";
-        return $res ?? 'c.id';
-    }
 
-    public function countCourses()
-    {
-        return $this->createQueryBuilder('c')
-            ->select('COUNT(c.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        if (!$res)
+            return 'c.created_date, c.name';
+        else
+        {
+            if (!strpos($res, 'c.name'))
+                $res .= ', c.name';
+            return $res;
+        } 
     }
 
     // /**
